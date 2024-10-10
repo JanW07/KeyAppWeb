@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate Control</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gate Control System</h1>
+        <div id="gate-state">
+            <h2>Gate is <span id="state-text">closed</span></h2>
+            <div class="gate">
+                <div class="left-door"></div>
+                <div class="right-door"></div>
+                <div id="overlay-text"></div>  <!-- Text for 'Opening...' and 'Closing...' -->
+            </div>
+        </div>
+        <div class="controls">
+            <button id="open-btn">Open Gate</button>
+            <button id="close-btn">Close Gate</button>
+        </div>
+    </div>
+
+    <!-- Modal for error messages -->
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-message"></p>
+        </div>
+    </div>
+
+    <script>
+        let transitionTime = 3100; // Default transition time in milliseconds
+
+        function updateState() {
+            fetch('/state')
+            .then(response => response.json())
+            .then(data => {
+                const stateText = document.getElementById('state-text');
+                const leftDoor = document.querySelector('.left-door');
+                const rightDoor = document.querySelector('.right-door');
+                const overlayText = document.getElementById('overlay-text');
+                
+                stateText.textContent = data.state;
+
+                // Change color based on state
+                if (data.state === 'opening') {
+                    leftDoor.style.transition = `transform ${transitionTime}ms ease`; // Set transition time
+                    rightDoor.style.transition = `transform ${transitionTime}ms ease`; // Set transition time
+                    leftDoor.style.transform = 'translateX(-100%)';
+                    rightDoor.style.transform = 'translateX(100%)';
+                    overlayText.textContent = 'Opening...';
+                } else if (data.state === 'closing') {
+                    leftDoor.style.transition = `transform ${transitionTime}ms ease`; // Set transition time
+                    rightDoor.style.transition = `transform ${transitionTime}ms ease`; // Set transition time
+                    leftDoor.style.transform = 'translateX(0)';
+                    rightDoor.style.transform = 'translateX(0)';
+                    overlayText.textContent = 'Closing...';
+                } else if (data.state === 'open') {
+                    leftDoor.style.transform = 'translateX(-100%)';
+                    rightDoor.style.transform = 'translateX(100%)';
+                    overlayText.textContent = '';
+                } else if (data.state === 'closed') {
+                    leftDoor.style.transform = 'translateX(0)';
+                    rightDoor.style.transform = 'translateX(0)';
+                    overlayText.textContent = '';
+                }
+            });
+    }
+
+        function showModal(message) {
+            const modal = document.getElementById('error-modal');
+            const modalMessage = document.getElementById('modal-message');
+            modalMessage.textContent = message;
+            modal.style.display = "block";
+        }
+
+        document.getElementById('open-btn').addEventListener('click', () => {
+            fetch('/open', { method: 'POST' })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => showModal(data.message));
+                    }
+                    return updateState();
+                });
+        });
+
+        document.getElementById('close-btn').addEventListener('click', () => {
+            fetch('/close', { method: 'POST' })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => showModal(data.message));
+                    }
+                    return updateState();
+                });
+        });
+
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('error-modal').style.display = "none";
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('error-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        setInterval(updateState, 1000);  // Update state every second
+    </script>
+
+</body>
+</html>
