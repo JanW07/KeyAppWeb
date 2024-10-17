@@ -4,6 +4,7 @@ from gate_controller import GateController
 app = Flask(__name__)
 gate = GateController()
 
+# for production implement Gunicorn
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -27,4 +28,4 @@ def get_state():
     return jsonify({"state": gate.get_state()}), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, ssl_context=('flask.crt', 'flask.key'))
+    app.run(host='0.0.0.0', port=5000) # ssl is added on reverse proxy, here not needed
