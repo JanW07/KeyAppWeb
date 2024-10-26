@@ -1,9 +1,11 @@
 {
-    "5d41402abc4b2a76b9719d911017e213": {
+    "b7ca6bef77e21eedd6bf2e05f3cb34ef": {
         "info": {
-            "name": "Sylwia"
+            "device_name": "SM-A528B",
+            "os": "android",
+            "version": "Android 14"
         },
-        "authorized": false,
+        "authorized": true,
         "unknown": false
     }
 }

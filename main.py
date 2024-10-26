@@ -18,12 +18,9 @@ def check_authorization():
         return None
 
     # Otherwise, check device authorization
-    hashed_id = request.headers.get('Device-Id')
+    hashed_id = request.headers.get('Device-ID')
     if not hashed_id or not device_manager.is_authorized(hashed_id):
-        # Store the device info and deny access if unauthorized
-        device_info = request.get_json()
-        if device_manager.add_device(hashed_id, device_info):
-            print(f"New device detected: {device_info}, awaiting authorization.")
+        # If the device is not authorized, deny access without adding it to DeviceManager
         return jsonify({"status": "error", "message": "Unauthorized device."}), 403
     return None
 
@@ -91,6 +88,23 @@ def delete_device(hashed_id):
 def devices_page():
     return render_template('devices.html')
 
+# New endpoint to handle initial device registration
+@app.route('/authenticate', methods=['POST'])
+def authenticate():
+    hashed_id = request.headers.get('Device-ID')
+    device_info = request.get_json()  # Expect JSON data for device info
+
+    if not hashed_id or not device_info:
+        return jsonify({"status": "error", "message": "Device-ID header or device info is missing."}), 400
+
+    # Check if device is already known
+    if device_manager.is_authorized(hashed_id) or hashed_id in device_manager.devices:
+        return jsonify({"status": "info", "message": "Device already known."}), 200
+
+    # Add the device info to DeviceManager and respond
+    device_manager.add_device(hashed_id, device_info)
+    print(f"New device registered: {device_info}")
+    return jsonify({"status": "success", "message": "Device registered successfully."}), 201
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
