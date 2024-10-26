@@ -18,7 +18,6 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    width: 350px;
     margin: 0 auto;
 }
 
@@ -38,7 +37,7 @@ h1 {
 
 #state-text {
     font-weight: bold;
-    color: #d9534f;  /* Initially red to indicate the gate is closed */
+    color: #d9534f; /* Initially red to indicate the gate is closed */
 }
 
 /* Gate Styling */
@@ -53,7 +52,8 @@ h1 {
     overflow: hidden;
 }
 
-.left-door, .right-door {
+.left-door,
+.right-door {
     position: absolute;
     top: 0;
     width: 50%;
@@ -157,25 +157,25 @@ button:active {
 
 /* Modal Styles */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
+    display: none;
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
     padding-top: 60px;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto; 
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; 
+    width: 80%;
     border-radius: 10px;
     text-align: center;
 }
@@ -192,4 +192,123 @@ button:active {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.authorize-btn {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.authorize-btn:hover {
+    background-color: #4cae4c;
+}
+
+#back-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+#back-btn:hover {
+    background-color: #c9302c;
+}
+
+/* Styling for Device Management */
+.device-container {
+    display: flex; /* Enables flexbox layout */
+    justify-content: space-around; /* Evenly distributes space around items */
+    gap: 20px; /* Adds space between the columns */
+    margin-bottom: 20px; /* Space below the device container */
+}
+
+.device-section {
+    flex: 1; /* Each section takes equal space */
+    min-width: 250px; /* Minimum width for each section */
+    border: 1px solid #ccc; /* Border around each section */
+    padding: 15px; /* Adds padding for spacing */
+    border-radius: 8px; /* Rounded corners for sections */
+    background-color: #f9f9f9; /* Light background for sections */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.device-section h2 {
+    font-size: 20px; /* Font size for section titles */
+    margin-bottom: 10px; /* Space below section titles */
+    color: #333; /* Color for section titles */
+}
+
+/* Styling for Device Entries */
+.device-entry {
+    background-color: #ffffff; /* White background for device entries */
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd; /* Light border for entries */
+    border-radius: 5px; /* Rounded corners for entries */
+    text-align: left;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+/* General Button Styles */
+.btn {
+    background-color: #5bc0de; /* Default button color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 10px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #31b0d5; /* Color on hover */
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Specific Button Colors */
+.authorize-btn {
+    background-color: #5cb85c;
+}
+
+.authorize-btn:hover {
+    background-color: #4cae4c;
+}
+
+.delete-btn {
+    background-color: #d9534f;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+#back-btn {
+    background-color: #d9534f;
+    margin-top: 20px; /* Added margin for spacing */
+}
+
+#back-btn:hover {
+    background-color: #c9302c; /* Hover effect for the back button */
 }
