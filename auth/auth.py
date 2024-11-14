@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 
 auth_bp = Blueprint('auth', __name__)
 
-# Dummy credentials for simplicity
+# Dummy credentials for simplicity  
 VALID_USERNAME = "admin"
 VALID_PASSWORD = "admin"
 

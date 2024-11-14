@@ -7,8 +7,13 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Header with Logout Button -->
+    <div class="header">
         <h1>Gate Control System</h1>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="container">
         <div id="gate-state">
             <h2>Gate is <span id="state-text">closed</span></h2>
             <div class="gate">
@@ -33,64 +38,63 @@
 
     <button id="manage-devices-btn">Manage Devices</button>
 
-<script>
-    document.getElementById('manage-devices-btn').addEventListener('click', () => {
-        window.location.href = '/devices_page';
-    });
-</script>
-
+    <script>
+        document.getElementById('manage-devices-btn').addEventListener('click', () => {
+            window.location.href = '/devices_page';
+        });
+    </script>
 
     <script>
         let transitionTime = 3100; // Default transition time in milliseconds
         const SERVER_TOKEN = 'my_server_token';  // Server token
-    
+
         function updateState() {
-    fetch('/state', {
-        method: 'GET',
-        headers: {
-            'Authorization': SERVER_TOKEN  // Add the server token for the state request
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(data => {
-                showModal(data.message);
-                throw new Error(data.message);
+            fetch('/state', {
+                method: 'GET',
+                headers: {
+                    'Authorization': SERVER_TOKEN  // Add the server token for the state request
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        showModal(data.message);
+                        throw new Error(data.message);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                const stateText = document.getElementById('state-text');
+                const leftDoor = document.querySelector('.left-door');
+                const rightDoor = document.querySelector('.right-door');
+                const overlayText = document.getElementById('overlay-text');
+                
+                stateText.textContent = data.state;
+
+                // Update door positions based on state
+                if (data.state === 'opening') {
+                    leftDoor.style.transform = 'translateX(-100%)';
+                    rightDoor.style.transform = 'translateX(100%)';
+                    overlayText.textContent = 'Opening...';
+                } else if (data.state === 'closing') {
+                    leftDoor.style.transform = 'translateX(0)';
+                    rightDoor.style.transform = 'translateX(0)';
+                    overlayText.textContent = 'Closing...';
+                } else if (data.state === 'open') {
+                    leftDoor.style.transform = 'translateX(-100%)';
+                    rightDoor.style.transform = 'translateX(100%)';
+                    overlayText.textContent = '';
+                } else if (data.state === 'closed') {
+                    leftDoor.style.transform = 'translateX(0)';
+                    rightDoor.style.transform = 'translateX(0)';
+                    overlayText.textContent = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching gate state:', error);
             });
         }
-        return response.json();
-    })
-    .then(data => {
-        const stateText = document.getElementById('state-text');
-        const leftDoor = document.querySelector('.left-door');
-        const rightDoor = document.querySelector('.right-door');
-        const overlayText = document.getElementById('overlay-text');
-        
-        stateText.textContent = data.state;
-
-        // Update door positions based on state
-        if (data.state === 'opening') {
-            leftDoor.style.transform = 'translateX(-100%)';
-            rightDoor.style.transform = 'translateX(100%)';
-            overlayText.textContent = 'Opening...';
-        } else if (data.state === 'closing') {
-            leftDoor.style.transform = 'translateX(0)';
-            rightDoor.style.transform = 'translateX(0)';
-            overlayText.textContent = 'Closing...';
-        } else if (data.state === 'open') {
-            leftDoor.style.transform = 'translateX(-100%)';
-            rightDoor.style.transform = 'translateX(100%)';
-            overlayText.textContent = '';
-        } else if (data.state === 'closed') {
-            leftDoor.style.transform = 'translateX(0)';
-            rightDoor.style.transform = 'translateX(0)';
-            overlayText.textContent = '';
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching gate state:', error);
-    });
-}
 
         function showModal(message) {
             const modal = document.getElementById('error-modal');
@@ -142,7 +146,5 @@
     
         setInterval(updateState, 1000);  // Update state every second
     </script>
-    
-
 </body>
 </html>
