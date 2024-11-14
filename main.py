@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 from gate_controller import GateController
 from device_manager import DeviceManager
 
@@ -6,8 +6,46 @@ app = Flask(__name__)
 gate = GateController()
 device_manager = DeviceManager()
 
-# Define a server secret token to bypass authorization for internal requests
+app = Flask(__name__)
+app.secret_key = 'your_secret_key'
+
 SERVER_TOKEN = "my_server_token"
+VALID_USERNAME = "admin"
+VALID_PASSWORD = "admin"
+
+# Login route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == VALID_USERNAME and password == VALID_PASSWORD:
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+        else:
+            return "Invalid credentials, please try again."
+    return '''
+        <form method="post">
+            <label>Username: <input type="text" name="username"></label><br>
+            <label>Password: <input type="password" name="password"></label><br>
+            <button type="submit">Login</button>
+        </form>
+    '''
+
+# Logout route
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('login'))
+
+# Decorator to protect routes
+def login_required(f):
+    def wrap(*args, **kwargs):
+        if 'logged_in' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    wrap.__name__ = f.__name__
+    return wrap
 
 # Middleware to check if device is authorized or if it's a server request
 def check_authorization():
@@ -25,6 +63,7 @@ def check_authorization():
     return None
 
 @app.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
@@ -85,6 +124,7 @@ def delete_device(hashed_id):
     return jsonify({'success': False, 'message': 'Device not found.'}), 404
 
 @app.route('/devices_page')
+@login_required
 def devices_page():
     return render_template('devices.html')
 
