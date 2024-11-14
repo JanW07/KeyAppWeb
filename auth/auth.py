@@ -1,10 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 
 auth_bp = Blueprint('auth', __name__)
-
-# Dummy credentials for simplicity  
-VALID_USERNAME = "admin"
-VALID_PASSWORD = "admin"
 
 # Login route
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -12,12 +8,20 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == VALID_USERNAME and password == VALID_PASSWORD:
+        
+        # Retrieve credentials from app config
+        config = current_app.config['CREDENTIALS']
+        valid_username = config.get('username')
+        valid_password = config.get('password')
+
+        if username == valid_username and password == valid_password:
+            session.permanent = True
             session['logged_in'] = True
             return redirect(url_for('auth.index'))
         else:
             return "Invalid credentials, please try again."
     return render_template('login.html')
+
 
 # Logout route
 @auth_bp.route('/logout')
