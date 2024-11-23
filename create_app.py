@@ -7,6 +7,7 @@ from gate.gate_routes import gate_bp
 from device.device_routes import device_bp
 from gate.gate_controller import GateController
 from device.device_manager import DeviceManager
+from middleware.middleware import log_request_middleware
 
 def load_config():
     config_path = os.path.join(os.path.dirname(__file__), 'config.json')
@@ -16,6 +17,9 @@ def load_config():
 def create_app():
     app = Flask(__name__)
     app.secret_key = 'your_secret_key'
+
+    # Add middleware
+    log_request_middleware(app)
 
     # Set session lifetime
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)

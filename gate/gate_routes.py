@@ -9,9 +9,13 @@ def open_gate():
     if auth_response:
         return auth_response
 
-    if current_app.gate.open_gate():  # Access gate through current_app
-        return jsonify({"status": "open"}), 200
-    return jsonify({"status": "error", "message": "Gate is already open."}), 400
+    # Determine the initiator
+    initiator = request.headers.get("Device-ID", "server")
+    success = current_app.gate.open_gate(initiator)
+    if success:
+        return jsonify({"status": "success", "message": "Gate is opening."}), 200
+    else:
+        return jsonify({"status": "error", "message": "Gate is already open."}), 400
 
 @gate_bp.route('/close', methods=['POST'])
 def close_gate():
@@ -19,9 +23,13 @@ def close_gate():
     if auth_response:
         return auth_response
 
-    if current_app.gate.close_gate():  # Access gate through current_app
-        return jsonify({"status": "closed"}), 200
-    return jsonify({"status": "error", "message": "Gate is already closed."}), 400
+    # Determine the initiator
+    initiator = request.headers.get("Device-ID", "server")
+    success = current_app.gate.close_gate(initiator)
+    if success:
+        return jsonify({"status": "success", "message": "Gate is closing."}), 200
+    else:
+        return jsonify({"status": "error", "message": "Gate is already closed."}), 400
 
 @gate_bp.route('/state', methods=['GET'])
 def get_state():
