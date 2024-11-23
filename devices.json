@@ -2,10 +2,10 @@
     "b7ca6bef77e21eedd6bf2e05f3cb34ef": {
         "info": {
             "device_name": "SM-A528B",
-            "os": "android",
-            "version": "Android 14"
+            "os": "Android",
+            "version": "14"
         },
-        "authorized": true,
+        "authorized": false,
         "unknown": false
     }
 }
