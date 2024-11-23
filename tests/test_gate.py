@@ -36,7 +36,7 @@ class GateTestCase(unittest.TestCase):
         # Happy path: Attempt to close the gate when it's open
         response = self.client.post('/close', headers=self.headers, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'closed', response.data)
+        self.assertIn(b'"message":"Gate is closing."', response.data)
 
         # Sad path: Attempt to close the gate again when it's already closed
         response = self.client.post('/close', headers=self.headers, follow_redirects=True)
