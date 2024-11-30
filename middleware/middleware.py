@@ -17,12 +17,10 @@ def log_request_middleware(app):
     """Middleware to log requests."""
     @app.before_request
     def log_request():
-        # Extract relevant info
         action = request.endpoint
         
-        # Skip logging specific actions
         if action == "gate.get_state":
-            return  # Do not log this action
+            return
         
         device_id = request.headers.get("Device-ID", "Unknown")
         metadata = {

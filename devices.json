@@ -5,7 +5,7 @@
             "os": "Android",
             "version": "14"
         },
-        "authorized": false,
+        "authorized": true,
         "unknown": false
     }
 }

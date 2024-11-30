@@ -1,5 +1,5 @@
 import unittest
-from create_app import create_app
+from create_main import create_app
 import hashlib
 
 class DeviceTestCase(unittest.TestCase):

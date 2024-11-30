@@ -18,16 +18,12 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = 'your_secret_key'
 
-    # Add middleware
     log_request_middleware(app)
 
-    # Set session lifetime
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
 
-    # Load config.json
     app.config['CREDENTIALS'] = load_config()
 
-    # Initialize global instances
     app.gate = GateController()
     app.device_manager = DeviceManager()
 

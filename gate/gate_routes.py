@@ -9,7 +9,6 @@ def open_gate():
     if auth_response:
         return auth_response
 
-    # Determine the initiator
     initiator = request.headers.get("Device-ID", "server")
     success = current_app.gate.open_gate(initiator)
     if success:
@@ -23,7 +22,6 @@ def close_gate():
     if auth_response:
         return auth_response
 
-    # Determine the initiator
     initiator = request.headers.get("Device-ID", "server")
     success = current_app.gate.close_gate(initiator)
     if success:

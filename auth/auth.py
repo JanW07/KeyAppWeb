@@ -9,7 +9,6 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        # Retrieve credentials from app config
         config = current_app.config['CREDENTIALS']
         valid_username = config.get('username')
         valid_password = config.get('password')

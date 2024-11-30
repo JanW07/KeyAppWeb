@@ -2,7 +2,7 @@ import unittest
 import json
 import os
 from datetime import timedelta
-from create_app import create_app
+from create_main import create_app
 
 class AppTestCase(unittest.TestCase):
     def setUp(self):

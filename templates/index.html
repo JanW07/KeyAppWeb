@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <!-- Header with Logout Button -->
     <div class="header">
         <h1>Gate Control System</h1>
         <a href="/logout" class="logout-btn">Logout</a>
@@ -19,7 +18,7 @@
             <div class="gate">
                 <div class="left-door"></div>
                 <div class="right-door"></div>
-                <div id="overlay-text"></div>  <!-- Text for 'Opening...' and 'Closing...' -->
+                <div id="overlay-text"></div>
             </div>
         </div>
         <div class="controls">
@@ -28,7 +27,6 @@
         </div>
     </div>
 
-    <!-- Modal for error messages -->
     <div id="error-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -45,14 +43,14 @@
     </script>
 
     <script>
-        let transitionTime = 3100; // Default transition time in milliseconds
-        const SERVER_TOKEN = 'my_server_token';  // Server token
+        let transitionTime = 3100;
+        const SERVER_TOKEN = 'my_server_token';
 
         function updateState() {
             fetch('/state', {
                 method: 'GET',
                 headers: {
-                    'Authorization': SERVER_TOKEN  // Add the server token for the state request
+                    'Authorization': SERVER_TOKEN
                 }
             })
             .then(response => {
@@ -72,7 +70,6 @@
                 
                 stateText.textContent = data.state;
 
-                // Update door positions based on state
                 if (data.state === 'opening') {
                     leftDoor.style.transform = 'translateX(-100%)';
                     rightDoor.style.transform = 'translateX(100%)';
@@ -107,7 +104,7 @@
             fetch('/open', {
                 method: 'POST',
                 headers: {
-                    'Authorization': SERVER_TOKEN  // Add the server token for requests
+                    'Authorization': SERVER_TOKEN
                 }
             })
             .then(response => {
@@ -122,7 +119,7 @@
             fetch('/close', {
                 method: 'POST',
                 headers: {
-                    'Authorization': SERVER_TOKEN  // Add the server token for requests
+                    'Authorization': SERVER_TOKEN
                 }
             })
             .then(response => {
@@ -144,7 +141,7 @@
             }
         }
     
-        setInterval(updateState, 1000);  // Update state every second
+        setInterval(updateState, 1000);
     </script>
 </body>
 </html>

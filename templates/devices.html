@@ -14,21 +14,18 @@
             <div class="device-section">
                 <h2>Unknown Devices</h2>
                 <div id="unknown-devices">
-                    <!-- Unknown devices will be listed here -->
                 </div>
             </div>
 
             <div class="device-section">
                 <h2>Authorized Devices</h2>
                 <div id="authorized-devices">
-                    <!-- Authorized devices will be listed here -->
                 </div>
             </div>
 
             <div class="device-section">
                 <h2>Blocked Devices</h2>
                 <div id="blocked-devices">
-                    <!-- Blocked devices will be listed here -->
                 </div>
             </div>
         </div>
@@ -37,7 +34,6 @@
     </div>
 
     <script>
-        // Fetch devices from the server
         function fetchDevices() {
             fetch('/devices')
                 .then(response => response.json())
@@ -46,17 +42,15 @@
                     const authorizedDevicesDiv = document.getElementById('authorized-devices');
                     const blockedDevicesDiv = document.getElementById('blocked-devices');
 
-                    unknownDevicesDiv.innerHTML = ''; // Clear unknown devices list
-                    authorizedDevicesDiv.innerHTML = ''; // Clear authorized devices list
-                    blockedDevicesDiv.innerHTML = ''; // Clear blocked devices list
+                    unknownDevicesDiv.innerHTML = '';
+                    authorizedDevicesDiv.innerHTML = '';
+                    blockedDevicesDiv.innerHTML = '';
 
-                    // Iterate over devices and sort them into categories
                     for (const [category, deviceList] of Object.entries(devices)) {
                         for (const [hashedId, device] of Object.entries(deviceList)) {
                             const deviceDiv = document.createElement('div');
                             deviceDiv.classList.add('device-entry');
 
-                            // Display device info
                             deviceDiv.innerHTML = `
                                 <p>Device ID: ${hashedId}</p>
                                 <p>Info: ${JSON.stringify(device.info)}</p>
@@ -67,14 +61,12 @@
                                 <button id="delete-${hashedId}" class="btn delete-btn">Delete</button>
                             `;
 
-                            // Append block button for unknown devices
                             if (category === 'unknown') {
                                 deviceDiv.innerHTML += `
                                     <button id="block-${hashedId}" class="btn block-btn">Block</button>
                                 `;
                             }
 
-                            // Append device to the correct category
                             if (category === 'authorized') {
                                 authorizedDevicesDiv.appendChild(deviceDiv);
                             } else if (category === 'unknown') {
@@ -83,25 +75,22 @@
                                 blockedDevicesDiv.appendChild(deviceDiv);
                             }
 
-                            // Add event listener for the authorize/block button
                             document.getElementById(`authorize-${hashedId}`).addEventListener('click', () => {
                                 if (device.authorized) {
-                                    blockDevice(hashedId);  // Handle blocking
+                                    blockDevice(hashedId);
                                 } else {
-                                    authorizeDevice(hashedId);  // Handle authorizing
+                                    authorizeDevice(hashedId);
                                 }
                             });
 
-                            // Add event listener for the block button if the device is unknown
                             if (category === 'unknown') {
                                 document.getElementById(`block-${hashedId}`).addEventListener('click', () => {
-                                    blockDevice(hashedId);  // Handle blocking from unknown devices
+                                    blockDevice(hashedId);
                                 });
                             }
 
-                            // Add event listener for the delete button
                             document.getElementById(`delete-${hashedId}`).addEventListener('click', () => {
-                                deleteDevice(hashedId);  // Handle deletion
+                                deleteDevice(hashedId);
                             });
                         }
                     }
@@ -115,7 +104,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    fetchDevices();  // Refresh device list
+                    fetchDevices();
                 } else {
                     console.error("Failed to authorize device:", response.status);
                 }
@@ -129,7 +118,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    fetchDevices();  // Refresh device list
+                    fetchDevices();
                 } else {
                     console.error("Failed to block device:", response.status);
                 }
@@ -143,7 +132,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    fetchDevices();  // Refresh device list
+                    fetchDevices();
                 } else {
                     console.error("Failed to delete device:", response.status);
                 }
@@ -151,12 +140,10 @@
             .catch(error => console.error("Error deleting device:", error));
         }
 
-        // Back button event
         document.getElementById('back-btn').addEventListener('click', () => {
             window.location.href = '/';
         });
 
-        // Fetch the device list on page load
         fetchDevices();
     </script>
 </body>
