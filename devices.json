@@ -1,9 +1,20 @@
 {
-    "b7ca6bef77e21eedd6bf2e05f3cb34ef": {
+    "UP1A.231005.007": {
         "info": {
+            "device_id": "UP1A.231005.007",
             "device_name": "SM-A528B",
             "os": "Android",
             "version": "14"
+        },
+        "authorized": false,
+        "unknown": false
+    },
+    "AP3A.241105.007": {
+        "info": {
+            "device_id": "AP3A.241105.007",
+            "device_name": "Pixel 7a",
+            "os": "Android",
+            "version": "15"
         },
         "authorized": true,
         "unknown": false
